@@ -10,22 +10,26 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+
+
+static const char *fonts[]     = {"Mononoki Nerd Font:size=9:antialias=true:autohint=true",
+                                  "Hack:size=8:antialias=true:autohint=true",
+                                  "JoyPixels:size=10:antialias=true:autohint=true"};
+static const char col_1[]  = "#282c34"; /* background color of bar */
+static const char col_2[]  = "#282c34"; /* border color unfocused windows */
+static const char col_3[]  = "#d7d7d7";
+static const char col_4[]  = "#924441"; /* border color focused windows and tags */
+
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_3, col_1, col_2 },
+	[SchemeSel]  = { col_3, col_4,  col_4  },
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -37,7 +41,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
@@ -106,7 +110,7 @@ static const char *ytdownloader[] = { "ytdownloader.sh" , NULL };
 static const char *imgtolink[] = { "imgtolink", NULL };
 static const char *filetolink[] = { "filetolink", NULL };
 
-        
+
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -120,11 +124,11 @@ static Key keys[] = {
     { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
     { ControlMask,                  XK_F2,     spawn,          {.v = mutevol } },
 
-    /*Shortcuts for Applications*/ 
+    /*Shortcuts for Applications*/
     { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
     { MODKEY, 			    XK_e,      spawn, 	       {.v = filemanager } },
     /*Shiftview*/
-    { MODKEY,                       XK_n,      shiftview,      {.i = +1 } }, 
+    { MODKEY,                       XK_n,      shiftview,      {.i = +1 } },
     { MODKEY,                       XK_b,      shiftview,      {.i = -1 } },
 
     /*Custom Scripts*/
@@ -177,16 +181,16 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 
 	 /*Layouts*/
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },	
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[5]} },
 
-        { MODKEY,                       XK_y,      setlayout,      {.v = &layouts[2]} },	
+        { MODKEY,                       XK_y,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[3]} },
-	
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[4]} },	
+
+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[1]} },
 
-	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[11]} },	
+	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[11]} },
 	{ MODKEY|ShiftMask,             XK_i,      setlayout,      {.v = &layouts[12]} },
 
 
@@ -233,4 +237,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
