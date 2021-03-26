@@ -97,9 +97,8 @@ static const char *browsercmd[] = { "brave", NULL };
 static const char *filemanager[] = { "nautilus", NULL };
 
 
-static const char *upvol[] = { "pactl" ,"set-sink-volume" ,"@DEFAULT_SINK@", "+5%", NULL };
-static const char *downvol[] = { "pactl" ,"set-sink-volume" ,"@DEFAULT_SINK@", "-5%", NULL };
-static const char *mutevol[] = { "pactl" ,"set-sink-volume" ,"@DEFAULT_SINK@", "toggle", NULL };
+static const char *upvol[] = { "amixer" ,"set" ,"'Master'", "5%+", NULL };
+static const char *downvol[] =  { "amixer" ,"set" ,"'Master'", "5%-", NULL };
 
 
 
@@ -109,6 +108,8 @@ static const char *screen_img_txt[] = {"img_to_txt", NULL};
 static const char *ytdownloader[] = { "ytdownloader.sh" , NULL };
 static const char *imgtolink[] = { "imgtolink", NULL };
 static const char *filetolink[] = { "filetolink", NULL };
+
+static const char *volume_auto[] = { "volume_auto_mute", NULL };
 
 
 #include "shiftview.c"
@@ -122,7 +123,8 @@ static Key keys[] = {
     /*VolumeControl*/
     { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
     { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
-    { ControlMask,                  XK_F2,     spawn,          {.v = mutevol } },
+    { ControlMask,                  XK_F2,     spawn,          {.v = volume_auto } },
+
 
     /*Shortcuts for Applications*/
     { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
