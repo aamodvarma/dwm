@@ -111,6 +111,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 
 /* Extras*/
@@ -160,6 +162,7 @@ static Key keys[] = {
     { MODKEY,                       XK_c,      spawn,          {.v = filetolink } },
 
 
+	{ MODKEY,                       XK_s,  togglescratch,  {.v = scratchpadcmd } },
 /*Custom_End*/
 
         { Mod1Mask,                     XK_space,  spawn,          {.v = dmenucmd } },
