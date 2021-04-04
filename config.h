@@ -35,6 +35,23 @@ static const char *colors[][3]      = {
 
 
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
+
+//const char *spcmd3[] = {"st", "-n", "spw", "-g", "120x34","-e", "vim", "/home/ajrv/Documents/quicknotes/\"$(date +\"%h%e %R\")\"", NULL};
+
+const char *spcmd3[] = {"st", "-n", "spw", "-g", "120x34","-e", "vim", "/home/ajrv/Documents/quicknotes/quicknotes", NULL};
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spranger",    spcmd2},
+	{"spw",   spcmd3},
+};
+
 
 
 
@@ -57,8 +74,12 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Gimp",	  NULL,			NULL,		0,				1,			 -1 },
+	{ "Firefox",  NULL,			NULL,		1 << 8,			0,			 -1 },
+	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
+	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
+	{ NULL,		  "spw",		NULL,		SPTAG(2),		1,			 -1 },
+
 };
 
 /* layout(s) */
@@ -111,9 +132,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
-
 
 /* Extras*/
 static const char *browsercmd[] = { "brave", NULL };
@@ -161,8 +179,10 @@ static Key keys[] = {
     { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
     { MODKEY,                       XK_c,      spawn,          {.v = filetolink } },
 
+	{ MODKEY,            			XK_s,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
 
-	{ MODKEY,                       XK_s,  togglescratch,  {.v = scratchpadcmd } },
 /*Custom_End*/
 
         { Mod1Mask,                     XK_space,  spawn,          {.v = dmenucmd } },
@@ -213,7 +233,6 @@ static Key keys[] = {
         { MODKEY,                       XK_y,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[3]} },
 
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[1]} },
 
 	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[11]} },
@@ -257,7 +276,8 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+
+	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
