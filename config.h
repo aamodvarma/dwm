@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -14,7 +14,7 @@ static const unsigned int baralpha = 0xd0;
 
 
 static const int vertpad                 = 10;  /* vertical padding of bar */
-static const int sidepad                 = 20;  /* horizontal padding of bar */
+static const int sidepad                 = 10;  /* horizontal padding of bar */
 
 /*static const char *fonts[]     = {"Mononoki Nerd Font:size=9:antialias=true:autohint=true",
                                   "Hack:size=8:antialias=true:autohint=true",
@@ -22,15 +22,15 @@ static const int sidepad                 = 20;  /* horizontal padding of bar */
 				  */
 static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=10" };
 
-static const char col_1[]  = "#0f111a"; /* background color of bar */
+static const char col_1[]  = "#282c34"; /* background color of bar */
 static const char col_2[]  = "#282c34"; /* border color unfocused windows */
 static const char col_3[]  = "#d7d7d7";
-static const char col_4[]  = "#4b0082"; /* border color focused windows and tags */
+static const char col_4[]  = "#bf616a"; /* border color focused windows and tags */
 static const char *colors[][3]      = {
 
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_3, col_1, col_2 },
-	[SchemeSel]  = { col_3, col_4,  col_4  },
+	[SchemeNorm] = { col_3, col_1 },
+	[SchemeSel]  = { col_3, col_4, col_4  },
 };
 
 
@@ -65,7 +65,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 static const Rule rules[] = {
@@ -177,7 +177,7 @@ static Key keys[] = {
     /*Custom Scripts*/
     { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
     { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
-    { MODKEY,                       XK_c,      spawn,          {.v = filetolink } },
+    { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
 
 	{ MODKEY,            			XK_s,  	   togglescratch,  {.ui = 0 } },
 	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
@@ -277,7 +277,7 @@ static Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
