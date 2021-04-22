@@ -13,8 +13,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const unsigned int baralpha = 0xd0;
 
 
-static const int vertpad                 = 10;  /* vertical padding of bar */
-static const int sidepad                 = 10;  /* horizontal padding of bar */
+static const int vertpad                 = 0;  /* vertical padding of bar */
+static const int sidepad                 = 0;  /* horizontal padding of bar */
 
 /*static const char *fonts[]     = {"Mononoki Nerd Font:size=9:antialias=true:autohint=true",
                                   "Hack:size=8:antialias=true:autohint=true",
@@ -39,12 +39,12 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
 
 //const char *spcmd3[] = {"st", "-n", "spw", "-g", "120x34","-e", "vim", "/home/ajrv/Documents/quicknotes/\"$(date +\"%h%e %R\")\"", NULL};
 
-const char *spcmd3[] = {"st", "-n", "spw", "-g", "120x34","-e", "vim", "/home/ajrv/Documents/quicknotes/quicknotes", NULL};
+const char *spcmd3[] = {"st", "-n", "spw", "-g", "144x41","-e", "vim", "/home/ajrv/Documents/quicknotes/quicknotes", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -132,6 +132,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *layoutmenu_cmd = "layoutmenu.sh";
 
 /* Extras*/
 static const char *browsercmd[] = { "brave", NULL };
@@ -152,36 +153,42 @@ static const char *filetolink[] = { "filetolink", NULL };
 
 static const char *volume_auto[] = { "volume_auto_mute", NULL };
 
+static const char *alt_tab[] = { "rofi", "-show", "window", NULL };
 
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 /*Custom*/
     /*Print*/
-    { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
-    { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
-    { MODKEY,                       XK_prtsc,  spawn,          {.v = screen_ } },
-    /*VolumeControl*/
-    { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
-    { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
-    { ControlMask,                  XK_F2,     spawn,          {.v = volume_auto } },
+        { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
+        { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
+        { MODKEY,                       XK_prtsc,  spawn,          {.v = screen_ } },
+        /*VolumeControl*/
+        { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
+        { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
+        { ControlMask,                  XK_F2,     spawn,          {.v = volume_auto } },
 
 
-    /*Shortcuts for Applications*/
-    { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
-    { MODKEY, 			    XK_e,      spawn, 	       {.v = filemanager } },
-    /*Shiftview*/
-    { MODKEY,                       XK_n,      shiftview,      {.i = +1 } },
-    { MODKEY,                       XK_b,      shiftview,      {.i = -1 } },
+        /*Shortcuts for Applications*/
+        { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
+        { MODKEY, 			XK_e,      spawn, 	       {.v = filemanager } },
+        /*Shiftview*/
+        { MODKEY,                       XK_n,      shiftview,      {.i = +1 } },
+        { MODKEY,                       XK_b,      shiftview,      {.i = -1 } },
 
-    /*Custom Scripts*/
-    { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
-    { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
-    { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
+        /*Custom Scripts*/
+        { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
+        { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
+        { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
 
-	{ MODKEY,            			XK_s,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
+
+	{ MODKEY,            		XK_s,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            		XK_u,	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,            		XK_x,	   togglescratch,  {.ui = 2 } },
+
+	{ Mod1Mask,            		XK_Tab,	  spawn,     {.v = alt_tab } },
+
+
 
 /*Custom_End*/
 
@@ -271,7 +278,7 @@ static Key keys[] = {
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
