@@ -13,7 +13,7 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const unsigned int baralpha = 0xd0;
 
 
-static const int vertpad                 = 10;  /* vertical padding of bar */
+static const int vertpad                 =10;  /* vertical padding of bar */
 static const int sidepad                 = 10;  /* horizontal padding of bar */
 
 /*static const char *fonts[]     = {"Mononoki Nerd Font:size=9:antialias=true:autohint=true",
@@ -23,14 +23,19 @@ static const int sidepad                 = 10;  /* horizontal padding of bar */
 static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=10" };
 
 static const char col_1[]  = "#282c34"; /* background color of bar */
-static const char col_2[]  = "#282c34"; /* border color unfocused windows */
-static const char col_3[]  = "#d7d7d7";
-static const char col_4[]  = "#bf616a"; /* border color focused windows and tags */
+static const char col_2[]  = "#d7d7d7";
+static const char col_3[]  = "#bf616a"; /* border color focused windows and tags */
 static const char *colors[][3]      = {
 
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_3, col_1 },
-	[SchemeSel]  = { col_3, col_4, col_4  },
+	[SchemeNorm] = { col_2, col_1 },
+	[SchemeSel]  = { col_2, col_1, col_3  },
+	[SchemeStatus]  = { col_3, col_3,  col_1  }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsSel]  = { col_2, col_3,  col_1  }, // Tagbar left selected {text,background,not used but cannot be empty}
+        [SchemeTagsNorm]  = { col_2, col_1,  col_1  }, // Tagbar left unselected {text,background,not used but cannot be empty}
+        [SchemeInfoSel]  = { col_2, col_1,  col_1  }, // infobar middle  selected {text,background,not used but cannot be empty}
+        [SchemeInfoNorm]  = { col_2, col_1,  col_1  }, // infobar middle  unselected {text,background,not used but cannot be empty}
+
 };
 
 
@@ -51,18 +56,6 @@ static Sp scratchpads[] = {
 	{"spranger",    spcmd2},
 	{"spw",   spcmd3},
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -153,36 +146,42 @@ static const char *filetolink[] = { "filetolink", NULL };
 
 static const char *volume_auto[] = { "volume_auto_mute", NULL };
 
+static const char *alt_tab[] = { "rofi", "-show", "window", NULL };
 
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 /*Custom*/
     /*Print*/
-    { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
-    { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
-    { MODKEY,                       XK_prtsc,  spawn,          {.v = screen_ } },
-    /*VolumeControl*/
-    { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
-    { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
-    { ControlMask,                  XK_F2,     spawn,          {.v = volume_auto } },
+        { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
+        { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
+        { MODKEY,                       XK_prtsc,  spawn,          {.v = screen_ } },
+        /*VolumeControl*/
+        { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
+        { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
+        { ControlMask,                  XK_F2,     spawn,          {.v = volume_auto } },
 
 
-    /*Shortcuts for Applications*/
-    { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
-    { MODKEY, 			    XK_e,      spawn, 	       {.v = filemanager } },
-    /*Shiftview*/
-    { MODKEY,                       XK_n,      shiftview,      {.i = +1 } },
-    { MODKEY,                       XK_b,      shiftview,      {.i = -1 } },
+        /*Shortcuts for Applications*/
+        { ControlMask,                  XK_4,      spawn,          {.v = browsercmd } },
+        { MODKEY, 			XK_e,      spawn, 	       {.v = filemanager } },
+        /*Shiftview*/
+        { MODKEY,                       XK_n,      shiftview,      {.i = +1 } },
+        { MODKEY,                       XK_b,      shiftview,      {.i = -1 } },
 
-    /*Custom Scripts*/
-    { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
-    { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
-    { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
+        /*Custom Scripts*/
+        { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
+        { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
+        { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
 
-	{ MODKEY,            			XK_s,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
+
+	{ MODKEY,            		XK_s,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            		XK_u,	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,            		XK_x,	   togglescratch,  {.ui = 2 } },
+
+	{ Mod1Mask,            		XK_Tab,	  spawn,     {.v = alt_tab } },
+
+
 
 /*Custom_End*/
 
