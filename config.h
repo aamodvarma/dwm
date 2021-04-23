@@ -10,11 +10,12 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int startontag         = 1;        /* 0 means no tag active on start */
 static const unsigned int baralpha = 0xd0;
 
 
-static const int vertpad                 =10;  /* vertical padding of bar */
-static const int sidepad                 = 10;  /* horizontal padding of bar */
+static const int vertpad                 =0;  /* vertical padding of bar */
+static const int sidepad                 = 0;  /* horizontal padding of bar */
 
 /*static const char *fonts[]     = {"Mononoki Nerd Font:size=9:antialias=true:autohint=true",
                                   "Hack:size=8:antialias=true:autohint=true",
@@ -144,9 +145,11 @@ static const char *ytdownloader[] = { "ytdownloader.sh" , NULL };
 static const char *imgtolink[] = { "imgtolink", NULL };
 static const char *filetolink[] = { "filetolink", NULL };
 
+static const char *changelayout[] = { "change_layout.sh", NULL };
+
+static const char *shut[] = { "shutscript.sh", NULL };
 static const char *volume_auto[] = { "volume_auto_mute", NULL };
 
-static const char *alt_tab[] = { "rofi", "-show", "window", NULL };
 
 #include "shiftview.c"
 static Key keys[] = {
@@ -179,9 +182,7 @@ static Key keys[] = {
 	{ MODKEY,            		XK_u,	   togglescratch,  {.ui = 1 } },
 	{ MODKEY,            		XK_x,	   togglescratch,  {.ui = 2 } },
 
-	{ Mod1Mask,            		XK_Tab,	  spawn,     {.v = alt_tab } },
-
-
+	{ MODKEY,            		XK_c,	  spawn,     {.v = changelayout } },
 
 /*Custom_End*/
 
@@ -264,6 +265,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} },
+
+	{ MODKEY|ControlMask|ShiftMask,	XK_x,	  spawn,     {.v = shut } }
 };
 
 /* button definitions */
@@ -283,4 +286,24 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+};
+
+/* signal definitions */
+/* signum must be greater than 0 */
+/* trigger signals using `xsetroot -name "fsignal:<signum>"` */
+static Signal signals[] = {
+	/* signum       function        argument  */
+	{ 1,            setlayout,      {.v = &layouts[0]} },
+	{ 2,            setlayout,      {.v = &layouts[1]} },
+        { 3,            setlayout,      {.v = &layouts[2]} },
+	{ 4,            setlayout,      {.v = &layouts[3]} },
+	{ 5,            setlayout,      {.v = &layouts[4]} },
+	{ 6,            setlayout,      {.v = &layouts[5]} },
+	{ 7,            setlayout,      {.v = &layouts[6]} },
+	{ 8,            setlayout,      {.v = &layouts[7]} },
+	{ 9,            setlayout,      {.v = &layouts[8]} },
+	{ 10,           setlayout,      {.v = &layouts[9]} },
+	{ 11,           setlayout,      {.v = &layouts[10]} },
+	{ 12,           setlayout,      {.v = &layouts[11]} },
+	{ 13,           setlayout,      {.v = &layouts[12]} },
 };
