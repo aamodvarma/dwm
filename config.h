@@ -103,8 +103,8 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 
 /* Extras*/
-static const char *browsercmd[] = { "brave", NULL };
-static const char *filemanager[] = { "nautilus", NULL };
+static const char *browsercmd[] = { "qutebrowser", NULL };
+static const char *filemanager[] = { "dolphin", NULL };
 
 
 static const char *upvol[] = { "amixer" ,"set" ,"'Master'", "5%+", NULL };
