@@ -10,6 +10,10 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int usealtbar          = 1;        /* 1 means use non-dwm status bar */
+static const char *altbarclass      = "Polybar"; /* Alternate bar class name */
+static const char *altbarcmd        = "$HOME/.config/polybar/bar.sh"; /* Alternate bar launch command */
+
 static const int startontag         = 1;        /* 0 means no tag active on start */
 static const unsigned int baralpha = 0xd0;
 
@@ -285,3 +289,4 @@ static Signal signals[] = {
 	{ 12,           setlayout,      {.v = &layouts[11]} },
 	{ 13,           setlayout,      {.v = &layouts[12]} },
 };
+
