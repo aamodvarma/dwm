@@ -20,7 +20,7 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
 
 //const char *spcmd3[] = {"st", "-n", "spw", "-g", "120x34","-e", "vim", "/home/ajrv/Documents/quicknotes/\"$(date +\"%h%e %R\")\"", NULL};
 
@@ -124,6 +124,8 @@ static const char *changelayout[] = { "change_layout.sh", NULL };
 static const char *shut[] = { "shutscript.sh", NULL };
 static const char *volume_auto[] = { "volume_auto_mute", NULL };
 
+static const char *moviess[] = { "/home/ajrv/Videos/1337x/rofimovie.sh", NULL };
+static const char *tstop[] = { "transmission_stop.sh", NULL };
 
 #include "shiftview.c"
 static Key keys[] = {
@@ -133,6 +135,9 @@ static Key keys[] = {
         { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
         { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
         { MODKEY,                       XK_prtsc,  spawn,          {.v = screen_ } },
+
+        { MODKEY|ShiftMask,                       XK_m,  spawn,          {.v = moviess } },
+        { MODKEY|ShiftMask,                       XK_t,  spawn,          {.v = tstop } },
         /*VolumeControl*/
         { ControlMask,                  XK_F4,     spawn,          {.v = upvol } },
         { ControlMask,                  XK_F3,     spawn,          {.v = downvol } },
@@ -203,7 +208,6 @@ static Key keys[] = {
 
 	 /*Layouts*/
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[5]} },
 
         { MODKEY,                       XK_y,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[3]} },
