@@ -10,7 +10,7 @@ static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=10" };
 
 static const char col_1[]  = "#282c34"; /* background color of bar */
 static const char col_2[]  = "#d7d7d7";
-static const char col_3[]  = "#bf616a"; /* border color focused windows and tags */
+static const char col_3[]  = "#4C657F"; /* border color focused windows and tags */
 static const char *colors[][3]      = {
 
 	/*               fg         bg         border   */
@@ -23,3 +23,4 @@ static const char *colors[][3]      = {
         [SchemeInfoNorm]  = { col_2, col_1,  col_1  }, // infobar middle  unselected {text,background,not used but cannot be empty}
 
 };
+
