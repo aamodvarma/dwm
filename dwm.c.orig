@@ -238,6 +238,7 @@ static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
+
 static void togglescratch(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -1738,7 +1739,6 @@ resizemouse(const Arg *arg)
 		focus(NULL);
 	}
 }
-
 void
 restack(Monitor *m)
 {

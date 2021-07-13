@@ -3,11 +3,11 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
-static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */ static const unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */ static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int usealtbar          = 0;        /* 1 means use non-dwm status bar */
@@ -17,18 +17,13 @@ static const char *altbarcmd        = "$HOME/.config/polybar/bar.sh"; /* Alterna
 static const int startontag         = 1;        /* 0 means no tag active on start */
 static const unsigned int baralpha = 0xd0;
 
-
-
 typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
-
-
-
-const char *spcmd3[] = {"st", "-n", "spw", "-g", "144x41","-e", "vim", "/home/ajrv/Documents/quicknotes/quicknotes", NULL};
+const char *spcmd3[] = {"st", "-n", "spw", "-g", "144x41","-e", "vim", "/home/ajrv/dox/quicknotes/quicknotes", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -45,16 +40,17 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",	  NULL,			NULL,		0,				0,			 -1 },
-	{ "Firefox",  NULL,			NULL,		1 << 8,			0,			 -1 },
-	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
-	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
-	{ NULL,		  "spw",		NULL,		SPTAG(2),		1,			 -1 },
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",    NULL,     NULL,           0,         0,          0,           0,        -1 },
+	{ "Firefox", NULL,     NULL,           0,         0,          0,          -1,        -1 },
+	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+//	{ "St",		  NULL,			NULL,		0, 			1,	1,0,		 -1 },
+	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,	1,0,		 -1 },
+	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,	1,0,		 -1 },
+	{ NULL,		  "spw",		NULL,		SPTAG(2),		1,	1,0,		 -1 },
+	{ "Spotify",  NULL,			NULL,		1,			0,	0,1,		 1 }
 
-	{ "Spotify",  NULL,			NULL,		1,			0,			 1 },
-
-	{ "alsamixer",  NULL,			NULL,		1,			0,			 1 },
 };
 
 /* layout(s) */
@@ -92,6 +88,16 @@ static const Layout layouts[] = {
 
 /*Custom*/
 #define XK_prtsc        0x0000ff61
+#define XF86XK_AudioLowerVolume       0x1008ff11
+#define XF86XK_AudioRaiseVolume      0x1008ff13
+#define XF86XK_AudioMute       0x1008ff12
+#define Button6 6
+#define Button7 7
+#define Button8 8
+#define Button9 9
+#define Button10 10
+#define Button11 11
+
 /*Custom_End*/
 
 #define MODKEY Mod4Mask
@@ -113,20 +119,15 @@ static const char *layoutmenu_cmd = "layoutmenu.sh";
 
 /* Extras*/
 static const char *browsercmd[] = { "brave", NULL };
-static const char *filemanager[] = { "dolphin", NULL };
-static const char *screen_clip[] = {"screenclip.sh", NULL};
+static const char *filemanager[] = { "nautilus", NULL };
 
-static const char *screenshot[] = {"screenshot.sh", NULL};
-static const char *screen_img_txt[] = {"python", "/home/ajrv/PycharmProjects/LinuxIMGtoCLIP/main.py", NULL};
 static const char *ytdownloader[] = { "ytdownloader.sh" , NULL };
-static const char *imgtolink[] = { "imgtolink", NULL };
-static const char *filetolink[] = { "filetolink", NULL };
 
 static const char *changelayout[] = { "change_layout.sh", NULL };
 
 static const char *shut[] = { "shutscript.sh", NULL };
 
-static const char *moviess[] = { "/home/ajrv/Videos/1337x/rofimovie.sh", NULL };
+static const char *moviess[] = { "/home/ajrv/vids/1337x/rofimovie.sh", NULL };
 static const char *tstop[] = { "transmission_stop.sh", NULL };
 
 #include "shiftview.c"
@@ -134,23 +135,30 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 /*Custom*/
     /*Print*/
-        { ControlMask,                  XK_prtsc,  spawn,          {.v = screen_img_txt } },
-        { ShiftMask,                    XK_prtsc,  spawn,          {.v = screen_clip } },
-        { MODKEY,                       XK_prtsc,  spawn,          {.v = screenshot } },
+//        { ControlMask,                  XK_prtsc,  spawn,          SHCMD("screenshot") },
+        { ShiftMask,                    XK_prtsc,  spawn,          SHCMD("screenshot -s")},
+        { MODKEY,                       XK_prtsc,  spawn,          SHCMD("screenshot")},
+        { Mod1Mask,                     XK_prtsc,  spawn,          SHCMD("imgtolink")},
 
         { MODKEY|ShiftMask|ControlMask,                       XK_m,  spawn,          {.v = moviess } },
         { MODKEY|ShiftMask,                       XK_t,  spawn,          {.v = tstop } },
         /*VolumeControl*/
-	{ MODKEY,			XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
-	{ MODKEY|ShiftMask,		XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)") },
-	{ MODKEY,			XK_equal,	spawn,		SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)") },
-	{ MODKEY|ShiftMask,		XK_equal,	spawn,		SHCMD("pamixer --allow-boost -i 15; kill -44 $(pidof dwmblocks)") },
+	{ 0,			XF86XK_AudioLowerVolume,	spawn,		SHCMD("pactl set-sink-volume  PulseEffects_apps  -10%") },
+	{ 0,			XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pactl set-sink-volume  PulseEffects_apps  +10%") },
+	{ 0,			XF86XK_AudioMute,	spawn,		SHCMD("pactl set-sink-mute PulseEffects_apps  toggle") },
+
+	{ MODKEY,			XK_minus,	spawn,		SHCMD("pactl set-sink-volume  PulseEffects_apps  -10%") },
+	{ MODKEY,			XK_equal,	spawn,		SHCMD("pactl set-sink-volume  PulseEffects_apps  +10%") },
+
+
 
 	{ MODKEY|ShiftMask,		XK_m,		spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-
 	{ MODKEY,			XK_F4,		spawn,		SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)") },
-
 	{ MODKEY,			XK_m,		spawn,		SHCMD(TERMINAL " -e ncmpcpp") },
+	{ MODKEY|ShiftMask|ControlMask,			XK_l,		spawn,		SHCMD("python /home/ajrv/PycharmProjects/SpotifyLyricsLatest/geniusapi.py") },
+	{ MODKEY|ShiftMask|ControlMask,			XK_b,		spawn,		SHCMD("bhavans.sh") },
+
+
 
 	{ MODKEY,			XK_F11,		spawn,		SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
         /*Shortcuts for Applications*/
@@ -162,8 +170,7 @@ static Key keys[] = {
 
         /*Custom Scripts*/
         { MODKEY|Mod1Mask,              XK_y,      spawn,          {.v = ytdownloader } },
-        { Mod1Mask,                     XK_prtsc,  spawn,          {.v = imgtolink } },
-        { MODKEY,                       XK_g,      spawn,          {.v = filetolink } },
+        { MODKEY,                       XK_g,      spawn,           SHCMD("filetolink")},
 
 
 	{ MODKEY,            		XK_s,  	   togglescratch,  {.ui = 0 } },
@@ -275,6 +282,13 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+
+
+	{ ClkClientWin,            0,          8,        spawn,      SHCMD("brave") },
+	{ ClkClientWin,            0,          9,        spawn,      SHCMD("spotify") },
+	{ ClkClientWin,            0,         10,        spawn,      SHCMD("gimp") },
+	{ ClkClientWin,            0,         11,        spawn,      SHCMD("st") },
+	{ ClkClientWin,            0,         14,        spawn,      SHCMD("pkill dwm") }
 };
 
 /* signal definitions */
