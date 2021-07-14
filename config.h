@@ -283,12 +283,6 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 
-
-	{ ClkClientWin,            0,          8,        spawn,      SHCMD("brave") },
-	{ ClkClientWin,            0,          9,        spawn,      SHCMD("spotify") },
-	{ ClkClientWin,            0,         10,        spawn,      SHCMD("gimp") },
-	{ ClkClientWin,            0,         11,        spawn,      SHCMD("st") },
-	{ ClkClientWin,            0,         14,        spawn,      SHCMD("pkill dwm") }
 };
 
 /* signal definitions */
@@ -296,18 +290,7 @@ static Button buttons[] = {
 /* trigger signals using `xsetroot -name "fsignal:<signum>"` */
 static Signal signals[] = {
 	/* signum       function        argument  */
-	{ 1,            setlayout,      {.v = &layouts[0]} },
-	{ 2,            setlayout,      {.v = &layouts[1]} },
-        { 3,            setlayout,      {.v = &layouts[2]} },
-	{ 4,            setlayout,      {.v = &layouts[3]} },
-	{ 5,            setlayout,      {.v = &layouts[4]} },
-	{ 6,            setlayout,      {.v = &layouts[5]} },
-	{ 7,            setlayout,      {.v = &layouts[6]} },
-	{ 8,            setlayout,      {.v = &layouts[7]} },
-	{ 9,            setlayout,      {.v = &layouts[8]} },
-	{ 10,           setlayout,      {.v = &layouts[9]} },
-	{ 11,           setlayout,      {.v = &layouts[10]} },
-	{ 12,           setlayout,      {.v = &layouts[11]} },
-	{ 13,           setlayout,      {.v = &layouts[12]} },
+	{ 1,            focusmon,       {.i = +1 } },
+	{ 2,            focusmon,       {.i = -1 } },
 };
 
